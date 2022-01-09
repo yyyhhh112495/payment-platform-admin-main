@@ -1,0 +1,78 @@
+#app{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+/* 页面通用样式 */
+.page{
+  width: 100%;
+  min-height: 100%;
+}
+.box{
+  padding: 10px;
+  background-color: #fff;
+}
+// 数据列表 操作
+.table-operator {
+  margin-bottom: 18px;
+  button {
+    margin-right: 8px;
+  }
+}
+// 数据列表 搜索条件
+.table-page-search-wrapper {
+  .ant-form-inline {
+    .ant-form-item {
+      display: flex;
+      margin-bottom: 24px;
+      margin-right: 0;
+      .ant-form-item-control-wrapper {
+        flex: 1 1;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      > .ant-form-item-label {
+        line-height: 32px;
+        padding-right: 8px;
+        width: auto;
+      }
+      .ant-form-item-control {
+        height: 32px;
+        line-height: 32px;
+      }
+    }
+  }
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+}
+
+
+::-webkit-scrollbar{
+  width: 5px;
+  height: 5px;
+  background-color: #F5F5F5;
+}
+::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  box-shadow: 0 0 6px #e8e8e8;
+  background-color: #c8c8c8;
+}
+.ant-input[disabled] {
+  color: #000000;
+}
+.ant-select-disabled {
+  color: #000000;
+}
+.ant-input-number-disabled {
+  color: #000000;
+}
+.ant-table td{
+  white-space: nowrap;
+}
