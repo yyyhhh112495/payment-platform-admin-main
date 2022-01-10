@@ -14,9 +14,14 @@ const ORDERSTATUS = {
   0: '未支付',
   1: '已支付'
 }
+const PAYCHANEL = {
+  wepay: '微信',
+  alipay: '支付宝'
+}
 export default {
   STATUS,
   STATUS2,
   TRANSSTATUS,
-  ORDERSTATUS
+  ORDERSTATUS,
+  PAYCHANEL
 }

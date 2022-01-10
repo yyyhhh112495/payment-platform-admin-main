@@ -12,7 +12,8 @@ const api = {
   optTransByNo: '/jpysers/optTransByNo',
   queryTaskTrans: '/jpysers/queryTaskTrans',
   queryTaskTransByBusId: '/jpysers/queryTaskTransByBusId',
-  optJsTask: '/jpysers/optJsTask'
+  optJsTask: '/jpysers/optJsTask',
+  delRecords: '/jpysers/delRecords'
 }
 
 export function queryOrgInfo (data) {
@@ -95,6 +96,13 @@ export function queryTaskTransByBusId (data) {
 export function optJsTask (data) {
   return request({
     url: api.optJsTask,
+    method: 'post',
+    data: data
+  })
+}
+export function delRecords (data) {
+  return request({
+    url: api.delRecords,
     method: 'post',
     data: data
   })

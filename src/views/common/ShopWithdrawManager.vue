@@ -77,6 +77,12 @@
             {{$global.syscode.TRANSSTATUS[record]}}
           </a-tag>
         </span>
+        <span slot="payChanel" slot-scope="record">
+          <a-tag
+            :color="record == 'wepay' ? 'green' : record == 'alipay' ? 'blue' : ''">
+            {{$global.syscode.PAYCHANEL[record]}}
+          </a-tag>
+        </span>
       </a-table>
     </div>
     <a-modal
@@ -211,14 +217,22 @@ export default {
         dataIndex: 'jsnum',
         title: '结算金额（元）'
       },
-      {
-        dataIndex: 'profit',
-        title: '利润'
-      },
+      // {
+      //   dataIndex: 'profit',
+      //   title: '利润'
+      // },
       {
         dataIndex: 'transtatus',
         title: '结算状态',
         scopedSlots: { customRender: 'transtatus' }
+      },
+      {
+        dataIndex: 'payChanel',
+        title: '支付渠道'
+      },
+      {
+        dataIndex: 'payAccount',
+        title: '支付账户'
       },
       {
         dataIndex: 'jstime',

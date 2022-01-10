@@ -3,7 +3,7 @@
     <div class="right">
       <div class="lottie1" ref="lottie1"></div>
       <a-dropdown placement="bottomRight" >
-        <span class="text"> {{$store.state.user.userInfo.usrName}} <a-icon type="down" /> </span>
+        <span class="text"> {{this.$store.state.user.userInfo.username}} <a-icon type="down" /> </span>
         <a-menu slot="overlay" @click="avatarMenuClick">
           <a-menu-item key="2">修改密码</a-menu-item>
           <a-menu-item key="1">退出登录</a-menu-item>

@@ -4,12 +4,17 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="8" :sm="24">
+            <a-col :md="6" :sm="24">
+              <a-form-item label="流水号">
+                <a-input v-model="queryParam.tradeNo" allowClear autocomplete="off" placeholder="请输入"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
               <a-form-item label="商户名称">
                 <a-input v-model="queryParam.bussinessname" allowClear autocomplete="off" placeholder="请输入"/>
               </a-form-item>
             </a-col>
-            <a-col :md="8" :sm="24">
+            <a-col :md="6" :sm="24">
               <a-form-item label="订单状态">
                 <a-select v-model="queryParam.payres" allowClear placeholder="请选择">
                   <a-select-option v-for="(label, value) in $global.syscode.ORDERSTATUS" :key="value" :value="value">{{label}}</a-select-option>
@@ -22,7 +27,7 @@
                 </a-form-item>
               </a-col>
             </template>
-            <a-col :md="!advanced && 8 || 24" :sm="24">
+            <a-col :md="!advanced && 6 || 24" :sm="24">
               <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
                 <a-button type="primary" :loading="loading" @click="query()">查询</a-button>
                 <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
@@ -126,6 +131,13 @@
             {{$global.syscode.TRANSSTATUS[record]}}
           </a-tag>
         </span>
+        <span slot="payChanel" slot-scope="record">
+          <a-tag
+            :color="record == 'wepay' ? 'green' : record == 'alipay' ? 'blue' : ''">
+            {{$global.syscode.PAYCHANEL[record]}}
+          </a-tag>
+        </span>
+        <!-- <span slot="payAccount" slot-scope="record"> {{record }} </span> -->
       </a-table>
     </div>
     <a-modal
@@ -260,9 +272,19 @@ export default {
         dataIndex: 'tradenum',
         title: '客户支付金额（元）'
       },
+      // {
+      //   dataIndex: 'transnum',
+      //   title: '结算金额（元）'
+      // },
       {
-        dataIndex: 'transnum',
-        title: '结算金额（元）'
+        dataIndex: 'payChanel',
+        title: '支付渠道',
+        scopedSlots: { customRender: 'payChanel' }
+      },
+      {
+        dataIndex: 'payAccount',
+        title: '支付账户',
+        scopedSlots: { customRender: 'payAccount' }
       },
       {
         dataIndex: 'tradegentime',

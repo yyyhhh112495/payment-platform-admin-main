@@ -51,6 +51,8 @@
           <a @click="view(record)">查看</a>
           <a-divider type="vertical" />
           <a @click="reset(record)">重置密码</a>
+          <a-divider type="vertical" />
+          <a @click="del(record)">一键清除</a>
         </span>
         <span slot="bussstatus" slot-scope="record">
           <a-tag
@@ -172,7 +174,7 @@
 </template>
 
 <script>
-import { queryOrgInfo, optOrgInfo } from '@/api/common'
+import { queryOrgInfo, optOrgInfo, delRecords } from '@/api/common'
 import { restPasswd } from '@/api/user'
 export default {
   name: 'ShopManager',
@@ -273,6 +275,22 @@ export default {
       this.flag = '3'
       this.$nextTick(() => {
         this.form.setFieldsValue(this.$_.pick(record, Object.keys(this.form.getFieldsValue())))
+      })
+    },
+    del (record) {
+      this.$confirm({
+        title: '是否清除',
+        onOk: () => {
+          delRecords({
+            ...record,
+            bussinessid: record.bussinessid
+          }).then(response => {
+            this.$message.success('清除成功')
+            this.query()
+          }).finally(() => {
+            this.$store.commit('frame/setSpinning', false)
+          })
+        }
       })
     },
     add () {

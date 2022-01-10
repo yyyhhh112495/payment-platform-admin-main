@@ -4,7 +4,7 @@ const resolve = dir => {
   return path.join(__dirname, dir)
 }
 // 导入compression-webpack-plugin
-const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 // 定义压缩文件类型
 const productionGzipExtensions = ['js', 'css']
 module.exports = {

@@ -27,7 +27,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (res.retCode === '2') {
+    if (res.retCode === '2' || res.retCode === '3') {
       Modal.error({
         title: '错误',
         content: res.retMsg || 'Error',
