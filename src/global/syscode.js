@@ -18,10 +18,15 @@ const PAYCHANEL = {
   wepay: '微信',
   alipay: '支付宝'
 }
+const RSPRET = {
+  0: '失败',
+  1: '成功'
+}
 export default {
   STATUS,
   STATUS2,
   TRANSSTATUS,
   ORDERSTATUS,
-  PAYCHANEL
+  PAYCHANEL,
+  RSPRET
 }

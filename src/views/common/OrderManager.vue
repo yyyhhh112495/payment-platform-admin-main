@@ -5,6 +5,11 @@
         <a-form layout="inline">
           <a-row :gutter="48">
             <a-col :md="8" :sm="24">
+              <a-form-item label="流水号">
+                <a-input v-model="queryParam.tradeno" allowClear autocomplete="off" placeholder="请输入"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
               <a-form-item label="商户名称">
                 <a-input v-model="queryParam.bussinessname" allowClear autocomplete="off" placeholder="请输入"/>
               </a-form-item>
@@ -16,13 +21,39 @@
                 </a-select>
               </a-form-item>
             </a-col>
+            <a-col :md="8" :sm="24">
+                <a-form-item class="mydate" label="开始时间" >
+                  <div>
+                      <a-date-picker
+                        v-model="queryParam.startdate"
+                        type="date"
+                        placeholder="开始时间"
+                        style="width: 100%;"
+                        value-format="yyyy/MM/DD"
+                        />
+                  </div>
+              </a-form-item>
+            </a-col>
+              <a-col :md="8" :sm="24">
+                <a-form-item class="mydate" label="结束时间" >
+                  <div>
+                      <a-date-picker
+                        v-model="queryParam.enddate"
+                        type="date"
+                        placeholder="结束时间"
+                        style="width: 100%;"
+                        value-format="yyyy/MM/DD 25:00:00"
+                        />
+                  </div>
+              </a-form-item>
+            </a-col>
             <template v-if="advanced">
               <a-col :md="8" :sm="24">
                 <a-form-item label="">
                 </a-form-item>
               </a-col>
             </template>
-            <a-col :md="!advanced && 8 || 24" :sm="24">
+            <a-col :md="!advanced && 6 || 24" :sm="24">
               <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
                 <a-button type="primary" :loading="loading" @click="query()">查询</a-button>
                 <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
@@ -105,6 +136,11 @@
         :scroll="{ x: true }"
         @change="query"
       >
+      <span slot="action" slot-scope="record">
+          <a @click="handleCallBack(record)">通知下游</a>
+           <a-divider type="vertical" />
+          <a @click="handleQuery(record)">获取状态</a>
+        </span>
         <span slot="payres" slot-scope="record">
           <a-tag
             :color="record == '1' ? 'green' : record == '0' ? 'red' : ''">
@@ -120,7 +156,7 @@
 </template>
 
 <script>
-import { queryTransInfo, queryTransCon, optTransByNo } from '@/api/common'
+import { queryTransInfo, queryTransCon, optTransByNo, notifyChannelByTradeno, queryPayResBytradeno } from '@/api/common'
 export default {
   name: 'OrderManager',
   data () {
@@ -140,7 +176,9 @@ export default {
       totalpay: 0,
       jsnum: 0,
       paysuc: 0,
-      payfai: 0
+      payfai: 0,
+      startdate: undefined,
+      enddate: undefined
     }
   },
   created () {
@@ -177,6 +215,14 @@ export default {
       {
         dataIndex: 'paytime',
         title: '支付时间'
+      },
+      {
+        title: '操作',
+        key: 'action',
+        fixed: 'right',
+        scopedSlots: { customRender: 'action' },
+        width: 120,
+        align: 'center'
       }
       // {
       //   dataIndex: 'transno',
@@ -274,6 +320,26 @@ export default {
         window.open(response.retData.filename)
       }).finally(() => {
         this.$store.commit('frame/setSpinning', false)
+      })
+    },
+    handleCallBack (record) {
+      notifyChannelByTradeno({
+        ...this.queryParam,
+        tradeno: record.tradeNo
+      }).then(response => {
+        this.query()
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    handleQuery (record) {
+      queryPayResBytradeno({
+        ...this.queryParam,
+        tradeno: record.tradeNo
+      }).then(response => {
+        this.query()
+      }).finally(() => {
+        this.loading = false
       })
     }
   }

@@ -13,7 +13,9 @@ const api = {
   queryTaskTrans: '/jpysers/queryTaskTrans',
   queryTaskTransByBusId: '/jpysers/queryTaskTransByBusId',
   optJsTask: '/jpysers/optJsTask',
-  delRecords: '/jpysers/delRecords'
+  delRecords: '/jpysers/delRecords',
+  notifyChannelByTradeno: '/jpysers/notifyChannelByTradeno',
+  queryPayResBytradeno: '/jpysers/queryPayResBytradeno'
 }
 
 export function queryOrgInfo (data) {
@@ -103,6 +105,20 @@ export function optJsTask (data) {
 export function delRecords (data) {
   return request({
     url: api.delRecords,
+    method: 'post',
+    data: data
+  })
+}
+export function notifyChannelByTradeno (data) {
+  return request({
+    url: api.notifyChannelByTradeno,
+    method: 'post',
+    data: data
+  })
+}
+export function queryPayResBytradeno (data) {
+  return request({
+    url: api.queryPayResBytradeno,
     method: 'post',
     data: data
   })

@@ -4,21 +4,47 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="6" :sm="24">
+            <a-col :md="8" :sm="24">
               <a-form-item label="流水号">
                 <a-input v-model="queryParam.tradeNo" allowClear autocomplete="off" placeholder="请输入"/>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="24">
+            <a-col :md="8" :sm="24">
               <a-form-item label="商户名称">
                 <a-input v-model="queryParam.bussinessname" allowClear autocomplete="off" placeholder="请输入"/>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="24">
+            <a-col :md="8" :sm="24">
               <a-form-item label="订单状态">
                 <a-select v-model="queryParam.payres" allowClear placeholder="请选择">
                   <a-select-option v-for="(label, value) in $global.syscode.ORDERSTATUS" :key="value" :value="value">{{label}}</a-select-option>
                 </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+                <a-form-item class="mydate" label="开始时间" >
+                  <div>
+                      <a-date-picker
+                        v-model="queryParam.startdate"
+                        type="date"
+                        placeholder="开始时间"
+                        style="width: 100%;"
+                        value-format="yyyy/MM/DD"
+                        />
+                  </div>
+              </a-form-item>
+            </a-col>
+              <a-col :md="8" :sm="24">
+                <a-form-item class="mydate" label="结束时间" >
+                  <div>
+                      <a-date-picker
+                        v-model="queryParam.enddate"
+                        type="date"
+                        placeholder="结束时间"
+                        style="width: 100%;"
+                        value-format="yyyy/MM/DD 25:00:00"
+                        />
+                  </div>
               </a-form-item>
             </a-col>
             <template v-if="advanced">
@@ -137,6 +163,12 @@
             {{$global.syscode.PAYCHANEL[record]}}
           </a-tag>
         </span>
+        <span slot="rspret" slot-scope="record">
+          <a-tag
+            :color="record == '1' ? 'green' : record == '0' ? 'red' : ''">
+            {{$global.syscode.RSPRET[record]}}
+          </a-tag>
+        </span>
         <!-- <span slot="payAccount" slot-scope="record"> {{record }} </span> -->
       </a-table>
     </div>
@@ -250,7 +282,9 @@ export default {
       paysuc: 0,
       payfai: 0,
       visible: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      startdate: undefined,
+      enddate: undefined
     }
   },
   created () {
@@ -289,6 +323,11 @@ export default {
       {
         dataIndex: 'tradegentime',
         title: '支付时间'
+      },
+      {
+        dataIndex: 'rspret',
+        title: '渠道回调状态',
+        scopedSlots: { customRender: 'rspret' }
       }
       // {
       //   dataIndex: 'transstatus',
@@ -322,6 +361,12 @@ export default {
       }).then(response => {
         this.pagination.total = Number(response.retData.total)
         response.retData.list.forEach((el, index) => {
+          if ((typeof el.payAccount) === 'string') {
+            if (el.payChanel === 'wepay') {
+              let acc = JSON.parse(el.payAccount)
+              el.payAccount = acc.openid
+            }
+          }
           this.dataList.push({
             key: index,
             ...el
